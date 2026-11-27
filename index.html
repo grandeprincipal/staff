@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#4B1F6F">
+<meta name="apple-mobile-web-app-title" content="GM Staff">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src https://script.google.com https://script.googleusercontent.com; base-uri 'none'; form-action 'none'">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<title>Grande Montessori · Staff login</title>
+<style>
+  /* Staff login (Logins, Part 2). Made for phones first: big text and buttons, one column. */
+  :root { --purple:#4B1F6F; --purple2:#6B3A93; --p50:#F4EFF8; --gold:#F2C230; --gold-soft:#FDF3D3; --gold-ink:#6E5200;
+          --ink:#1F1A24; --muted:#5F5868; --line:#E6E0EC; --line2:#D9D0E3; --bg:#F7F5F9; --red:#B3261E; --red-bg:#FDECEA; --green:#1E6B3C; --green-bg:#E3F3E8; }
+  * { box-sizing:border-box; }
+  html, body { margin:0; }
+  body { font-family:'Plus Jakarta Sans', system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; color:var(--ink); background:var(--bg); font-size:16px; line-height:1.45; }
+  input, button { font-family:inherit; }
+  header { background:var(--purple); color:#fff; border-bottom:4px solid var(--gold); }
+  header .in { max-width:520px; margin:0 auto; padding:16px 18px; display:flex; align-items:center; gap:14px; }
+  .crest { width:58px; height:58px; border-radius:50%; background:#fff; display:flex; align-items:center; justify-content:center; flex:none; box-shadow:0 0 0 3px var(--gold); }
+  .crest img { width:52px; height:52px; border-radius:50%; display:block; }
+  .brand .motto { display:block; color:var(--gold); font-size:11px; font-weight:800; letter-spacing:1.6px; text-transform:uppercase; }
+  .brand h1 { margin:2px 0 0; font-size:20px; font-weight:800; line-height:1.2; }
+  main { max-width:520px; margin:0 auto; padding:20px 16px 40px; }
+  .card { background:#fff; border:1px solid var(--line); border-radius:18px; padding:22px 20px; box-shadow:0 6px 24px rgba(31,26,36,.06); }
+  h2 { margin:0 0 4px; font-size:22px; font-weight:800; color:var(--purple); }
+  .sub { margin:0 0 18px; color:var(--muted); font-size:15px; }
+  label { display:block; font-size:14px; font-weight:700; color:var(--ink); margin:14px 0 6px; }
+  .field { position:relative; }
+  input[type=text], input[type=password] { width:100%; min-height:52px; padding:12px 14px; font-size:17px; border:1.5px solid var(--line2); border-radius:12px; background:#fff; color:var(--ink); }
+  input:focus { outline:3px solid rgba(107,58,147,.25); border-color:var(--purple2); }
+  .field input { padding-right:78px; }
+  .show { position:absolute; right:6px; top:6px; height:40px; min-width:64px; border:0; border-radius:10px; background:var(--p50); color:var(--purple); font-weight:700; font-size:14px; cursor:pointer; }
+  .btn { display:flex; align-items:center; justify-content:center; width:100%; min-height:54px; margin-top:20px; border:0; border-radius:14px; background:var(--purple); color:#fff; font-size:17px; font-weight:800; cursor:pointer; }
+  .btn:disabled { opacity:.6; cursor:default; }
+  .btn.light { background:#fff; color:var(--purple); border:1.5px solid var(--line2); margin-top:10px; }
+  .msg { display:none; margin-top:14px; padding:12px 14px; border-radius:12px; font-size:15px; }
+  .msg.err { display:block; background:var(--red-bg); color:var(--red); border:1px solid #f3c2bd; }
+  .msg.ok { display:block; background:var(--green-bg); color:var(--green); border:1px solid #bfe3cb; }
+  .msg.info { display:block; background:var(--gold-soft); color:var(--gold-ink); border:1px solid #f1dc94; }
+  .help { margin:16px 0 0; color:var(--muted); font-size:14px; text-align:center; }
+  .rules { list-style:none; margin:12px 0 0; padding:0; font-size:14px; color:var(--muted); }
+  .rules li { display:flex; gap:8px; align-items:flex-start; padding:3px 0; }
+  .rules li::before { content:'○'; color:#b9b1c4; font-weight:800; width:16px; flex:none; }
+  .rules li.good { color:var(--green); } .rules li.good::before { content:'✓'; color:var(--green); }
+  .hello { font-size:24px; font-weight:800; color:var(--ink); margin:0 0 6px; }
+  .chips { display:flex; gap:6px; flex-wrap:wrap; margin:6px 0 16px; }
+  .chip { font-size:13px; font-weight:700; padding:4px 10px; border-radius:999px; background:#E7F1FB; color:#1D4F86; }
+  .chip.acc { background:var(--gold-soft); color:var(--gold-ink); }
+  .kv { border-top:1px solid var(--line); padding:12px 0 0; margin-top:4px; }
+  .kv div { margin:6px 0; font-size:15px; } .kv span { display:block; font-size:13px; color:var(--muted); font-weight:600; }
+  .soon { margin-top:16px; padding:12px 14px; border-radius:12px; background:var(--p50); color:var(--purple); font-size:14px; }
+  .who { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:14px; font-size:14px; color:var(--muted); }
+  .linkbtn { background:none; border:0; color:var(--purple); font-weight:700; font-size:14px; cursor:pointer; padding:8px 0; }
+  .hidden { display:none !important; }
+  .foot { text-align:center; color:#9a98a3; font-size:12px; margin-top:22px; }
+  /* Part 4: classes, class list, pupil profile */
+  .sech { display:flex; align-items:baseline; justify-content:space-between; margin:22px 2px 8px; }
+  .sech h3 { margin:0; font-size:18px; font-weight:800; color:var(--ink); }
+  .dept { font-size:12px; font-weight:800; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; margin:14px 4px 6px; }
+  .ccard { display:flex; align-items:center; gap:12px; width:100%; text-align:left; background:#fff; border:1px solid var(--line); border-radius:16px;
+           padding:14px 16px; margin-bottom:10px; cursor:pointer; font:inherit; color:inherit; box-shadow:0 2px 10px rgba(31,26,36,.04); min-height:64px; }
+  .ccard:active { background:var(--p50); }
+  .ccard .n { font-size:17px; font-weight:800; color:var(--purple); }
+  .ccard .m { font-size:13px; color:var(--muted); margin-top:2px; }
+  .ccard .cnt { margin-left:auto; text-align:right; font-size:12px; color:var(--muted); flex:none; } .ccard .cnt b { display:block; font-size:20px; color:var(--ink); line-height:1.1; }
+  .back { display:inline-flex; align-items:center; gap:4px; background:none; border:0; color:var(--purple); font-weight:700; font-size:15px; padding:10px 0; cursor:pointer; min-height:44px; }
+  .ttl { margin:2px 0 2px; font-size:24px; font-weight:800; color:var(--purple); }
+  .search { width:100%; min-height:48px; padding:10px 14px; font-size:16px; border:1.5px solid var(--line2); border-radius:12px; background:#fff; color:var(--ink); margin:10px 0 12px; font-family:inherit; }
+  .search:focus { outline:3px solid rgba(107,58,147,.25); border-color:var(--purple2); }
+  .plist { background:#fff; border:1px solid var(--line); border-radius:16px; overflow:hidden; }
+  .prow { display:flex; align-items:center; gap:12px; padding:11px 14px; border-bottom:1px solid var(--line); cursor:pointer; min-height:64px; }
+  .prow:last-child { border-bottom:0; } .prow:active { background:var(--p50); }
+  .pi { flex:1; min-width:0; } .pn { font-weight:700; font-size:16px; } .ps { font-size:13px; color:var(--muted); overflow-wrap:anywhere; }
+  .av { width:44px; height:44px; border-radius:50%; flex:none; background:var(--p50); color:var(--purple); display:flex; align-items:center; justify-content:center;
+        font-weight:800; font-size:15px; overflow:hidden; } .av img { width:100%; height:100%; object-fit:cover; display:block; }
+  .av.big { width:84px; height:84px; font-size:28px; box-shadow:0 0 0 3px var(--gold); }
+  .med { display:inline-block; font-size:11px; font-weight:800; color:var(--red); background:var(--red-bg); border-radius:999px; padding:2px 8px; margin-left:6px; vertical-align:2px; }
+  .call { flex:none; display:inline-flex; align-items:center; justify-content:center; min-width:64px; min-height:40px; padding:0 12px; border-radius:10px;
+          background:var(--green-bg); color:var(--green); font-weight:800; font-size:14px; text-decoration:none; }
+  .phead { display:flex; align-items:center; gap:16px; margin-bottom:6px; }
+  .pname { font-size:21px; font-weight:800; line-height:1.25; }
+  .medbox { margin-top:14px; background:var(--red-bg); border:1px solid #f3c2bd; color:#7a1b16; border-radius:12px; padding:12px 14px; font-size:15px; white-space:pre-wrap; }
+  .medbox b { display:block; color:var(--red); margin-bottom:2px; }
+  .medbox.none { background:var(--bg); border-color:var(--line); color:var(--muted); } .medbox.none b { color:var(--muted); }
+  .ph3 { margin:18px 0 4px; font-size:15px; font-weight:800; color:var(--purple); }
+  .contact { display:flex; align-items:center; gap:10px; padding:10px 0; border-top:1px solid var(--line); }
+  .contact .who2 { flex:1; min-width:0; font-size:15px; } .contact .who2 > span { display:block; font-size:12px; color:var(--muted); font-weight:700; }
+  .maintag { display:inline-block; font-size:11px; font-weight:800; color:var(--gold-ink); background:var(--gold-soft); border-radius:999px; padding:1px 7px; margin-left:4px; }
+  .note2 { margin-top:16px; font-size:13px; color:var(--muted); }
+  .empty { padding:18px 16px; color:var(--muted); font-size:15px; }
+  .framed header, .framed main { display:none !important; } .framednote { padding:20px; font-size:16px; }
+</style>
+<script>
+  if (window.top !== window.self) {
+    document.documentElement.className += " framed";
+    document.addEventListener("DOMContentLoaded", function () {
+      var p = document.createElement("p"); p.className = "framednote";
+      p.innerHTML = 'For your safety this page works only on its own. <a target="_blank" rel="noopener" href="' + location.href.replace(/"/g, "%22") + '">Open the staff page</a>';
+      document.body.appendChild(p);
+    });
+  }
+</script>
+</head>
+<body>
+<header><div class="in">
+  <div class="crest"><img alt="Grande Montessori school badge" src="data:image/jpeg;base64,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"></div>
+  <div class="brand"><span class="motto">Foundation Builders</span><h1>Grande Montessori</h1></div>
+</div></header>
+<main>
+  <!-- 1. Log in -->
+  <section id="v-login" class="card">
+    <h2>Staff login</h2>
+    <p class="sub">Use the username and password the administrator gave you.</p>
+    <form id="f-login" autocomplete="on" novalidate>
+      <label for="l-user">Username</label>
+      <input type="text" id="l-user" name="username" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="e.g. sandra.otoo" maxlength="40">
+      <label for="l-pass">Password</label>
+      <div class="field"><input type="password" id="l-pass" name="password" autocomplete="current-password" maxlength="64">
+        <button type="button" class="show" data-for="l-pass" aria-label="Show password">Show</button></div>
+      <button class="btn" id="l-go" type="submit">Log in</button>
+    </form>
+    <div class="msg" id="l-msg" role="alert"></div>
+    <p class="help">Forgot your password? Ask the administrator for a new temporary one.</p>
+  </section>
+
+  <!-- 2. Choose your own password (first login, or later) -->
+  <section id="v-change" class="card hidden">
+    <h2 id="c-title">Choose your own password</h2>
+    <p class="sub" id="c-sub">This is your first login. Please replace the temporary password with one only you know.</p>
+    <form id="f-change" novalidate>
+      <div id="c-curbox">
+        <label for="c-cur">Current password</label>
+        <div class="field"><input type="password" id="c-cur" autocomplete="current-password" maxlength="64">
+          <button type="button" class="show" data-for="c-cur" aria-label="Show password">Show</button></div>
+      </div>
+      <label for="c-new">New password</label>
+      <div class="field"><input type="password" id="c-new" autocomplete="new-password" maxlength="64">
+        <button type="button" class="show" data-for="c-new" aria-label="Show password">Show</button></div>
+      <label for="c-new2">Type it again</label>
+      <div class="field"><input type="password" id="c-new2" autocomplete="new-password" maxlength="64">
+        <button type="button" class="show" data-for="c-new2" aria-label="Show password">Show</button></div>
+      <ul class="rules" id="c-rules">
+        <li data-r="len">At least 8 characters</li>
+        <li data-r="mix">Letters and numbers</li>
+        <li data-r="name">Not your name or username</li>
+        <li data-r="same">Both boxes the same</li>
+      </ul>
+      <button class="btn" id="c-go" type="submit">Save my password</button>
+      <button class="btn light hidden" id="c-cancel" type="button">Cancel</button>
+    </form>
+    <div class="msg" id="c-msg" role="alert"></div>
+  </section>
+
+  <!-- 3. Logged in -->
+  <section id="v-home" class="hidden">
+    <div class="who"><span id="h-user"></span><button class="linkbtn" id="h-out" type="button">Log out</button></div>
+    <div class="card">
+      <p class="hello" id="h-hello">Welcome</p>
+      <div class="chips" id="h-roles"></div>
+      <div class="msg" id="h-msg" role="status"></div>
+    </div>
+    <div id="h-findbox" class="hidden">
+      <div class="sech"><h3>Find a pupil</h3></div>
+      <input type="search" class="search" id="h-q" placeholder="Name or Student ID" autocomplete="off" spellcheck="false" aria-label="Find a pupil by name or Student ID">
+      <div id="h-found"></div>
+    </div>
+    <div class="sech"><h3>My classes</h3><button class="linkbtn" id="h-refresh" type="button">Refresh</button></div>
+    <div id="h-classes"></div>
+    <button class="btn light" id="h-pass" type="button">Change my password</button>
+  </section>
+
+  <!-- 4. One class (Part 4) -->
+  <section id="v-class" class="hidden">
+    <button class="back" id="k-back" type="button">‹ My classes</button>
+    <h2 class="ttl" id="k-title"></h2>
+    <p class="sub" id="k-sub" style="margin-bottom:0"></p>
+    <input type="search" class="search" id="k-q" placeholder="Search a pupil's name" autocomplete="off" spellcheck="false" aria-label="Search a pupil">
+    <div class="msg" id="k-msg" role="alert"></div>
+    <div id="k-list"></div>
+  </section>
+
+  <!-- 5. One pupil (Part 4) -->
+  <section id="v-pupil" class="hidden">
+    <button class="back" id="p-back" type="button">‹ Back to the class</button>
+    <div class="msg" id="p-msg" role="alert"></div>
+    <div class="card" id="p-card"></div>
+  </section>
+  <p class="foot">Grande Montessori System · For staff only</p>
+</main>
+
+<script>
+  /* Staff login page. The session key lives only in this tab (sessionStorage): closing the page logs out.
+     After 30 minutes without use the page logs out by itself, and the server forgets the key too. */
+  var TOKEN = null, ME = null, LASTPW = '', LAST_ACTIVE = Date.now(), IDLE_MS = 30 * 60 * 1000, BUSY = false;
+  var CLASSES = null, LISTS = {}, CUR = { cls: '', pupil: '' };   // pupil data: kept only in this page's memory, wiped at log out
+  var FIND = { q: '', res: null, timer: null };
+  function $(id) { return document.getElementById(id); }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function msg(id, text, kind) { var m = $(id); m.textContent = text || ''; m.className = 'msg' + (text ? ' ' + (kind || 'err') : ''); }
+  function view(which) {
+    ['login', 'change', 'home', 'class', 'pupil'].forEach(function (v) { $('v-' + v).classList.toggle('hidden', v !== which); });
+    window.scrollTo(0, 0);
+  }
+  function saveKey(t) { try { if (t) sessionStorage.setItem('gmStaffKey', t); else sessionStorage.removeItem('gmStaffKey'); } catch (e) {} }
+  function readKey() { try { return sessionStorage.getItem('gmStaffKey'); } catch (e) { return null; } }
+
+  /* This page lives on its own web address (no Google frame), so it works in normal Safari and Chrome on every phone.
+     It sends each request to the school system as plain text and gets JSON back. No cookies are sent. */
+  var API = 'https://script.google.com/macros/s/AKfycbyXNmHNyqt3Zt1HQzRi7CG2FeHJemNmV-3mXCqOmNNljPYblFR0gx0bOprJZBZO0gSG6A/exec';
+  /** One request to the system. ok(answer) or fail() (no internet, or no answer within 40 seconds). */
+  function api(fn, args, ok, fail) {
+    var settled = false, ctl = null, timer;
+    try { ctl = typeof AbortController === 'function' ? new AbortController() : null; } catch (e) { ctl = null; }
+    var end = function (good, val) { if (settled) return; settled = true; clearTimeout(timer); if (good) { if (ok) ok(val || {}); } else if (fail) fail(val); };
+    timer = setTimeout(function () { try { if (ctl) ctl.abort(); } catch (e) {} end(false, 'timeout'); }, 40000);
+    var opts = { method: 'POST', body: JSON.stringify({ fn: fn, args: args }), headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                 credentials: 'omit', cache: 'no-store', redirect: 'follow' };
+    if (ctl) opts.signal = ctl.signal;
+    try {
+      fetch(API, opts)
+        .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+        .then(function (res) { end(true, res); }, function (e) { end(false, e); });
+    } catch (e) { end(false, e); }
+  }
+  /** Calls the server. Shows a clear message when the internet is down. */
+  function run(fn, args, done, msgId) {
+    if (BUSY) return;
+    BUSY = true;
+    var btns = document.querySelectorAll('button.btn');
+    Array.prototype.forEach.call(btns, function (b) { b.disabled = true; });
+    var finish = function () { BUSY = false; Array.prototype.forEach.call(btns, function (b) { b.disabled = false; }); };
+    api(fn, args, function (res) { finish(); done(res || {}); },
+        function () { finish(); if ($('l-go').textContent === 'Checking…') $('l-go').textContent = 'Log in'; msg(msgId, 'Could not reach the system. Please check your internet and try again.'); });
+  }
+
+  function loggedOut(text, kind) {
+    TOKEN = null; ME = null; LASTPW = ''; saveKey(null);
+    CLASSES = null; LISTS = {}; CUR = { cls: '', pupil: '' };   // nothing about pupils stays on the phone
+    ['h-classes', 'k-list', 'p-card', 'k-title', 'k-sub', 'h-found'].forEach(function (id) { $(id).innerHTML = ''; });
+    $('k-q').value = ''; $('h-q').value = ''; clearTimeout(FIND.timer); FIND = { q: '', res: null, timer: null };
+    $('h-findbox').classList.add('hidden');
+    $('l-pass').value = ''; ['c-cur', 'c-new', 'c-new2'].forEach(function (id) { $(id).value = ''; });
+    view('login');
+    msg('l-msg', text || '', kind || 'info');
+  }
+
+  function showHome(me) {
+    ME = me;
+    $('h-user').textContent = 'Logged in as ' + me.username;
+    $('h-hello').textContent = 'Welcome, ' + me.name;
+    $('h-roles').innerHTML = me.roles.map(function (r) { return '<span class="chip' + (r === 'Accountant' ? ' acc' : '') + '">' + esc(r) + '</span>'; }).join('');
+    view('home');
+    loadClasses(false);
+  }
+
+  /* ---------- Part 4: my classes → class list → pupil (view only; the server decides what each person may see) ---------- */
+
+  /** A staff call: handles "logged out" and "choose your password first" the same way everywhere. */
+  function scall(fn, args, done, msgId) {
+    run(fn, [TOKEN].concat(args), function (res) {
+      if (res.expired) { loggedOut(res.error || 'Your login has ended. Please log in again.', 'info'); return; }
+      if (res.mustChange) { showChange(true); msg('c-msg', 'Please choose your own password first.', 'info'); return; }
+      if (!res.ok) { msg(msgId, res.error || 'Something went wrong. Please try again.'); return; }
+      done(res);
+    }, msgId);
+  }
+  function initials(p) { return ((p.first || '').charAt(0) + (p.last || '').charAt(0)).toUpperCase() || '?'; }
+  function avatarHtml(p, big) { return '<div class="av' + (big ? ' big' : '') + '"' + (big ? ' id="p-av"' : '') + '>' + (p.thumb ? '<img alt="" src="' + esc(p.thumb) + '">' : esc(initials(p))) + '</div>'; }
+  function ddmmyyyy(ymd) { var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(ymd || ''); return m ? m[3] + '/' + m[2] + '/' + m[1] : (ymd || ''); }
+  function ageOf(ymd) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(ymd || ''); if (!m) return '';
+    var t = new Date(), a = t.getFullYear() - Number(m[1]);
+    if (t.getMonth() + 1 < Number(m[2]) || (t.getMonth() + 1 === Number(m[2]) && t.getDate() < Number(m[3]))) a--;
+    return a >= 0 && a < 30 ? a : '';
+  }
+  function telHref(ph) { return 'tel:' + String(ph || '').replace(/[^\d+]/g, ''); }
+  /** Who to call for a pupil: the main contact, else the first parent with a phone. null when there is no phone (or the person may not see phones). */
+  function callOf(p) {
+    if (p.mainPhone) return { who: p.mainContact, phone: p.mainPhone };
+    var keys = ['father', 'mother', 'guardian'], names = ['Father', 'Mother', 'Guardian'];
+    for (var i = 0; i < keys.length; i++) { var c = p[keys[i]]; if (c && c.phone) return { who: names[i], phone: c.phone }; }
+    return null;
+  }
+  // The phone's back button moves between these screens.
+  var HIST = !!(window.history && history.pushState);
+  function hist(state) { try { if (HIST) history.pushState(state, ''); } catch (e) {} }
+
+  function loadClasses(force) {
+    if (CLASSES && !force) { drawClasses(); return; }
+    $('h-classes').innerHTML = '<p class="sub">Loading your classes…</p>';
+    scall('staffClasses', [], function (res) { CLASSES = res.classes; if (res.me) ME = res.me; drawClasses(); }, 'h-msg');
+  }
+  function drawClasses() {
+    var box = $('h-classes');
+    if (!CLASSES) { box.innerHTML = ''; return; }
+    if (!CLASSES.length) { box.innerHTML = '<div class="soon">No classes yet. Ask the administrator to give you your class or your subjects.</div>'; return; }
+    var many = CLASSES.length > 6, last = '', h = '';
+    CLASSES.forEach(function (k) {
+      if (many && k.dept !== last) { h += '<div class="dept">' + esc(k.dept) + '</div>'; last = k.dept; }
+      h += '<button class="ccard" type="button" data-k="' + esc(k.id) + '"><div><div class="n">' + esc(k.name) + '</div><div class="m">' + esc(k.how.join(' · ')) + '</div></div>' +
+           '<div class="cnt"><b>' + k.pupils + '</b>' + (k.pupils === 1 ? 'pupil' : 'pupils') + '</div></button>';
+    });
+    box.innerHTML = h;
+    Array.prototype.forEach.call(box.querySelectorAll('[data-k]'), function (b) { b.onclick = function () { openClass(b.getAttribute('data-k'), true); }; });
+    showFind();
+  }
+
+  /* Part 5: find any pupil you may open (mainly the accountant: the whole school). The server applies the same limits. */
+  function showFind() {
+    var on = !!ME && !!CLASSES && (ME.roles.indexOf('Accountant') >= 0 || CLASSES.length > 3);
+    $('h-findbox').classList.toggle('hidden', !on);
+  }
+  function doFind() {
+    var q = $('h-q').value.trim();
+    if (q.length < 2) { FIND.q = ''; FIND.res = null; $('h-found').innerHTML = q ? '<p class="sub">Type at least 2 letters…</p>' : ''; return; }
+    if (BUSY) { FIND.timer = setTimeout(doFind, 300); return; }
+    if (q === FIND.q && FIND.res) { drawFound(); return; }
+    $('h-found').innerHTML = '<p class="sub">Searching…</p>';
+    scall('staffSearch', [q], function (res) { if ($('h-q').value.trim() !== q) return; FIND.q = q; FIND.res = res; drawFound(); }, 'h-msg');
+  }
+  function drawFound() {
+    var r = FIND.res, box = $('h-found');
+    if (!r) { box.innerHTML = ''; return; }
+    if (!r.pupils.length) { box.innerHTML = '<div class="plist"><div class="empty">No pupil found for “' + esc(FIND.q) + '”.</div></div>'; return; }
+    box.innerHTML = '<div class="plist">' + r.pupils.map(function (p) {
+      var pc = callOf(p), mayCall = !!(p.father || p.mother || p.guardian);
+      return '<div class="prow" role="button" tabindex="0" data-f="' + esc(p.id) + '">' + avatarHtml(p, false) +
+        '<div class="pi"><div class="pn">' + esc(p.name) + (p.hasMedical ? '<span class="med">Medical</span>' : '') + '</div>' +
+        '<div class="ps">' + esc(p.className) + (pc ? ' · ' + esc(pc.who) + ' ' + esc(pc.phone) : (mayCall ? ' · No phone recorded' : '')) + '</div></div>' +
+        (pc ? '<a class="call" href="' + esc(telHref(pc.phone)) + '" aria-label="Call ' + esc(pc.who) + ' of ' + esc(p.name) + '">Call</a>' : '') + '</div>';
+    }).join('') + '</div>' + (r.total > r.pupils.length ? '<p class="sub" style="margin-top:8px">Showing ' + r.pupils.length + ' of ' + r.total + '. Type more of the name.</p>' : '');
+    Array.prototype.forEach.call(box.querySelectorAll('[data-f]'), function (row) {
+      var go = function () { CUR.cls = ''; openPupil(row.getAttribute('data-f'), true); };
+      row.onclick = function (ev) { if (ev.target.closest && ev.target.closest('a.call')) return; go(); };
+      row.onkeydown = function (ev) { if (ev.key === 'Enter') go(); };
+    });
+  }
+  function classInfo(id) { return (CLASSES || []).filter(function (k) { return k.id === id; })[0]; }
+
+  function openClass(id, push) {
+    var k = classInfo(id);
+    CUR.cls = id; CUR.pupil = '';
+    $('k-title').textContent = k ? k.name : '';
+    $('k-sub').textContent = ''; $('k-q').value = ''; msg('k-msg', '');
+    view('class');
+    if (push) hist({ v: 'class', k: id });
+    if (LISTS[id]) { drawList(); return; }
+    $('k-list').innerHTML = '<p class="sub">Loading the class list…</p>';
+    scall('staffClassList', [id], function (res) { LISTS[id] = res; if (CUR.cls === id) drawList(); }, 'k-msg');
+  }
+  function drawList() {
+    var L = LISTS[CUR.cls];
+    if (!L) return;
+    $('k-title').textContent = L.cls.name;
+    $('k-sub').textContent = L.pupils.length + (L.pupils.length === 1 ? ' pupil' : ' pupils') + ' · ' + L.cls.how.join(' · ') + ' · view only' +
+      (!L.phones ? '. Parent phones: ask the class teacher.' : '');
+    var q = $('k-q').value.trim().toLowerCase();
+    var list = L.pupils.filter(function (p) { return !q || p.name.toLowerCase().indexOf(q) >= 0; });
+    if (!L.pupils.length) { $('k-list').innerHTML = '<div class="plist"><div class="empty">No pupils in this class yet.</div></div>'; return; }
+    if (!list.length) { $('k-list').innerHTML = '<div class="plist"><div class="empty">Nobody matches “' + esc(q) + '”.</div></div>'; return; }
+    $('k-list').innerHTML = '<div class="plist">' + list.map(function (p) {
+      var pc = L.phones ? callOf(p) : null;
+      return '<div class="prow" role="button" tabindex="0" data-p="' + esc(p.id) + '">' + avatarHtml(p, false) +
+        '<div class="pi"><div class="pn">' + esc(p.name) + (p.hasMedical ? '<span class="med">Medical</span>' : '') + '</div>' +
+        '<div class="ps">' + esc(p.gender || '') + (pc ? ' · ' + esc(pc.who) + ' ' + esc(pc.phone) : (L.phones ? ' · No phone recorded' : '')) + '</div></div>' +
+        (pc ? '<a class="call" href="' + esc(telHref(pc.phone)) + '" aria-label="Call ' + esc(pc.who) + ' of ' + esc(p.name) + '">Call</a>' : '') + '</div>';
+    }).join('') + '</div>';
+    Array.prototype.forEach.call($('k-list').querySelectorAll('[data-p]'), function (r) {
+      var go = function () { openPupil(r.getAttribute('data-p'), true); };
+      r.onclick = function (ev) { if (ev.target.closest && ev.target.closest('a.call')) return; go(); };
+      r.onkeydown = function (ev) { if (ev.key === 'Enter') go(); };
+    });
+  }
+
+  function openPupil(id, push) {
+    CUR.pupil = id; msg('p-msg', '');
+    $('p-back').textContent = CUR.cls ? '‹ Back to the class' : '‹ Back';
+    $('p-card').innerHTML = '<p class="sub" style="margin:0">Loading…</p>';
+    view('pupil');
+    if (push) hist({ v: 'pupil', k: CUR.cls, p: id });
+    scall('staffPupil', [id], function (res) {
+      if (CUR.pupil !== id) return;
+      drawPupil(res);
+      if (res.pupil.hasPhoto) scall('staffPhoto', [id], function (ph) {
+        var av = $('p-av'); if (ph.data && av && CUR.pupil === id) av.innerHTML = '<img alt="Photo of ' + esc(res.pupil.name) + '" src="' + esc(ph.data) + '">';
+      }, 'p-msg');
+    }, 'p-msg');
+  }
+  function drawPupil(res) {
+    var p = res.pupil, age = ageOf(p.dob), h = '';
+    var fromList = ((LISTS[CUR.cls] || {}).pupils || []).filter(function (x) { return x.id === p.id; })[0];
+    if (fromList && fromList.thumb) p.thumb = fromList.thumb;
+    h += '<div class="phead">' + avatarHtml(p, true) + '<div><div class="pname">' + esc(p.name) + '</div><div class="ps">' + esc(p.className) + ' · ' + esc(p.id) + '</div></div></div>';
+    h += '<div class="kv"><div><span>Gender</span>' + esc(p.gender || '—') + '</div><div><span>Date of birth</span>' + (p.dob ? esc(ddmmyyyy(p.dob)) + (age !== '' ? ' (age ' + age + ')' : '') : '—') + '</div></div>';
+    if (res.medical) {
+      h += p.medicalNotes ? '<div class="medbox"><b>Medical notes</b>' + esc(p.medicalNotes) + '</div>' : '<div class="medbox none"><b>Medical notes</b>None recorded.</div>';
+    }
+    if (res.phones) {
+      h += '<div class="ph3">Parents and guardian</div>';
+      var any = false;
+      ['Father', 'Mother', 'Guardian'].forEach(function (who) {
+        var c = p[who.toLowerCase()];
+        if (!c || (!c.name && !c.phone)) return;
+        any = true;
+        h += '<div class="contact"><div class="who2"><span>' + who + (p.mainContact === who ? ' <span class="maintag">Main contact</span>' : '') + '</span>' + esc(c.name || '—') +
+             (c.phone ? '<br>' + esc(c.phone) : '') + '</div>' + (c.phone ? '<a class="call" href="' + esc(telHref(c.phone)) + '" aria-label="Call ' + esc(who) + '">Call</a>' : '') + '</div>';
+      });
+      if (!any) h += '<p class="note2" style="margin-top:4px">No parent details recorded yet.</p>';
+    } else {
+      h += '<p class="note2">Parent phones are not shown for your subject classes. Please ask the class teacher or the office.</p>';
+    }
+    h += '<p class="note2">View only. If something is wrong or has changed, please tell the administrator.</p>';
+    $('p-card').innerHTML = h;
+  }
+
+  $('h-refresh').onclick = function () { msg('h-msg', ''); LISTS = {}; FIND.q = ''; FIND.res = null; loadClasses(true); doFind(); };
+  $('h-q').oninput = function () { clearTimeout(FIND.timer); FIND.timer = setTimeout(doFind, 450); };
+  $('k-back').onclick = function () { CUR.cls = ''; view('home'); drawClasses(); };
+  $('p-back').onclick = function () { if (CUR.cls && LISTS[CUR.cls]) { CUR.pupil = ''; view('class'); drawList(); } else { CUR.pupil = ''; view('home'); drawClasses(); } };
+  $('k-q').oninput = function () { drawList(); };
+  if (HIST) {
+    try {
+      window.addEventListener('popstate', function (e) {
+        if (!TOKEN || !ME || BUSY) return;
+        var st = (e && e.state) || {};
+        if (st.v === 'pupil' && st.p) { CUR.cls = st.k || ''; openPupil(st.p, false); }
+        else if (st.v === 'class' && st.k) openClass(st.k, false);
+        else { CUR.cls = ''; CUR.pupil = ''; view('home'); drawClasses(); }
+      });
+    } catch (e) {}
+  }
+
+  function showChange(first) {
+    $('c-title').textContent = first ? 'Choose your own password' : 'Change my password';
+    $('c-sub').textContent = first ? 'This is your first login. Please replace the temporary password with one only you know.' : 'Type your current password, then the new one twice.';
+    if (first && !LASTPW && ME) $('c-sub').textContent = 'Please replace your temporary password with one only you know.';
+    // At the first login the temporary password was just typed, so it is not asked again.
+    $('c-curbox').classList.toggle('hidden', !!(first && LASTPW));
+    $('c-cancel').classList.toggle('hidden', !!first);
+    ['c-cur', 'c-new', 'c-new2'].forEach(function (id) { $(id).value = ''; });
+    msg('c-msg', ''); rules();
+    view('change');
+    (first && LASTPW ? $('c-new') : $('c-cur')).focus();
+  }
+
+  /** The live ticks under the new password. */
+  function rules() {
+    var p = $('c-new').value, p2 = $('c-new2').value, low = p.toLowerCase(), me = ME || {};
+    var bad = [me.username, me.first].filter(function (x) { return x && x.length >= 3; }).some(function (x) { return low.indexOf(String(x).toLowerCase()) >= 0; });
+    var ok = { len: p.length >= 8, mix: /[A-Za-zÀ-ɏ]/.test(p) && /\d/.test(p), name: p.length > 0 && !bad, same: p.length > 0 && p === p2 };
+    Array.prototype.forEach.call(document.querySelectorAll('#c-rules li'), function (li) { li.classList.toggle('good', !!ok[li.getAttribute('data-r')]); });
+    return ok;
+  }
+
+  // Show / hide password
+  Array.prototype.forEach.call(document.querySelectorAll('.show'), function (b) {
+    b.onclick = function () {
+      var i = $(b.getAttribute('data-for')), on = i.type === 'password';
+      i.type = on ? 'text' : 'password'; b.textContent = on ? 'Hide' : 'Show';
+      b.setAttribute('aria-label', on ? 'Hide password' : 'Show password'); i.focus();
+    };
+  });
+
+  $('f-login').onsubmit = function (ev) {
+    ev.preventDefault();
+    var u = $('l-user').value.trim().toLowerCase(), p = $('l-pass').value;
+    if (!u || !p) { msg('l-msg', 'Please type your username and your password.'); return; }
+    msg('l-msg', '');
+    $('l-go').textContent = 'Checking…';
+    run('staffLogin', [u, p], function (res) {
+      $('l-go').textContent = 'Log in';
+      if (!res.ok) { $('l-pass').value = ''; msg('l-msg', res.error || 'Login did not work.'); $('l-pass').focus(); return; }
+      TOKEN = res.token; saveKey(TOKEN); LAST_ACTIVE = Date.now();
+      ME = res.me;
+      if (res.me.mustChange) { LASTPW = p; showChange(true); } else { LASTPW = ''; showHome(res.me); }
+      $('l-pass').value = '';
+    }, 'l-msg');
+  };
+
+  ['c-new', 'c-new2', 'c-cur'].forEach(function (id) { $(id).oninput = function () { rules(); msg('c-msg', ''); }; });
+  $('f-change').onsubmit = function (ev) {
+    ev.preventDefault();
+    var ok = rules(), cur = $('c-curbox').classList.contains('hidden') ? LASTPW : $('c-cur').value;
+    if (!cur) { msg('c-msg', 'Please type your current password.'); return; }
+    if (!ok.len || !ok.mix) { msg('c-msg', 'Your new password needs at least 8 characters, with letters and numbers.'); return; }
+    if (!ok.name) { msg('c-msg', 'Your new password must not contain your name or username.'); return; }
+    if (!ok.same) { msg('c-msg', 'The two new passwords are not the same.'); return; }
+    msg('c-msg', '');
+    run('staffChangePassword', [TOKEN, cur, $('c-new').value], function (res) {
+      if (res.expired) { loggedOut(res.error || 'You were logged out. Please log in again.', 'err'); return; }
+      if (!res.ok) { msg('c-msg', res.error); return; }
+      LASTPW = '';
+      showHome(res.me);
+      msg('h-msg', res.message, 'ok');
+    }, 'c-msg');
+  };
+  $('c-cancel').onclick = function () { showHome(ME); };
+  $('h-pass').onclick = function () { msg('h-msg', ''); showChange(false); };
+  $('h-out').onclick = function () {
+    var t = TOKEN;
+    loggedOut('You are logged out.', 'ok');
+    if (t) api('staffLogout', [t]);
+  };
+
+  // Logged out after 30 minutes without use (taps, typing, scrolling count as use).
+  ['pointerdown', 'keydown', 'scroll', 'touchstart'].forEach(function (e) { window.addEventListener(e, function () { LAST_ACTIVE = Date.now(); }, { passive: true }); });
+  setInterval(function () {
+    if (TOKEN && Date.now() - LAST_ACTIVE > IDLE_MS) {
+      var t = TOKEN;
+      loggedOut('You were logged out after 30 minutes without use. Please log in again.', 'info');
+      api('staffLogout', [t]);
+    }
+  }, 20000);
+  // Coming back to the page (phone unlocked): check the login is still valid.
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState !== 'visible' || !TOKEN || BUSY) return;
+    if (Date.now() - LAST_ACTIVE > IDLE_MS) { var t = TOKEN; loggedOut('You were logged out after 30 minutes without use. Please log in again.', 'info'); api('staffLogout', [t]); return; }
+    api('staffSession', [TOKEN], function (res) {
+      if (res && res.ok) { if (!$('v-home').classList.contains('hidden')) showHome(res.me); }
+      else if (res && res.expired) loggedOut('Your login has ended. Please log in again.', 'info');
+    });
+  });
+
+  // Opened again in the same tab: continue if the login is still valid.
+  (function () {
+    var t = readKey();
+    if (!t) { $('l-user').focus(); return; }
+    msg('l-msg', 'Checking your login…', 'info');
+    run('staffSession', [t], function (res) {
+      if (res.ok) { TOKEN = t; LAST_ACTIVE = Date.now(); msg('l-msg', ''); if (res.me.mustChange) { loggedOut('Please log in again to choose your password.', 'info'); } else showHome(res.me); }
+      else { saveKey(null); msg('l-msg', ''); $('l-user').focus(); }
+    }, 'l-msg');
+  })();
+</script>
+</body>
+</html>
